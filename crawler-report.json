@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-06-13T02:42:30.128Z",
+  "totalUrls": 330,
+  "internalUrls": 310,
+  "externalUrls": 20,
+  "statusCodes": {
+    "200": {
+      "total": 327,
+      "internal": 308,
+      "external": 19
+    },
+    "403": {
+      "total": 1,
+      "internal": 0,
+      "external": 1
+    },
+    "404": {
+      "total": 2,
+      "internal": 2,
+      "external": 0
+    }
+  }
+}

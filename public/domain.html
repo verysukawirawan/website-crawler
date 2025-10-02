@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Details - Tracer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header .back-link {
+            display: inline-block;
+            color: #d0d0d0;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
+        .header .back-link:hover {
+            color: #ffffff;
+        }
+
+        .stats-summary {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .label {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .stat-item .value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-item.success .value {
+            color: #d0d0d0;
+        }
+
+        .stat-item.error .value {
+            color: #ff6666;
+        }
+
+        .url-section {
+            margin-bottom: 30px;
+        }
+
+        .url-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .url-section.success h2 {
+            color: #d0d0d0;
+        }
+
+        .url-section.error h2 {
+            color: #ff6666;
+        }
+
+        .url-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .url-header {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .url-header:hover {
+            background: #222;
+        }
+
+        .url-item.success .url-header {
+            border-left: 4px solid #d0d0d0;
+        }
+
+        .url-item.error .url-header {
+            border-left: 4px solid #ff6666;
+        }
+
+        .url-path {
+            flex: 1;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin-right: 15px;
+        }
+
+        .status-code {
+            background: #000000;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .copy-btn {
+            background: #333;
+            color: #ffffff;
+            border: 1px solid #666;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-right: 10px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #555;
+        }
+
+        .copy-btn.copied {
+            background: #d0d0d0;
+            color: #000000;
+        }
+
+        .url-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-icon {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .url-sources {
+            padding: 0 15px 15px 15px;
+            display: none;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+            margin-top: -5px;
+        }
+
+        .url-sources.expanded {
+            display: block;
+        }
+
+        .url-sources h4 {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .source-item {
+            background: #000000;
+            border: 1px solid #333;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #d0d0d0;
+            word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .source-url {
+            flex: 1;
+        }
+
+        .source-copy-btn {
+            background: #333;
+            color: #ffffff;
+            border: 1px solid #666;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .source-copy-btn:hover {
+            background: #555;
+        }
+
+        .source-copy-btn.copied {
+            background: #d0d0d0;
+            color: #000000;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #d0d0d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Dashboard</a>
+            <h1 id="domainName">Loading...</h1>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading domain data...
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <div class="label">Total URLs</div>
+                    <div class="value" id="totalUrls">0</div>
+                </div>
+                <div class="stat-item success">
+                    <div class="label">Success</div>
+                    <div class="value" id="successCount">0</div>
+                </div>
+                <div class="stat-item error">
+                    <div class="label">Errors</div>
+                    <div class="value" id="errorCount">0</div>
+                </div>
+            </div>
+
+            <div id="successSection" class="url-section success" style="display: none;">
+                <h2>Success URLs</h2>
+                <div id="successUrls"></div>
+            </div>
+
+            <div id="errorSection" class="url-section error" style="display: none;">
+                <h2>Error URLs</h2>
+                <div id="errorUrls"></div>
+            </div>
+
+            <div id="noData" class="no-data" style="display: none;">
+                No URLs found for this domain.
+            </div>
+        </div>
+    </div>
+
+    <script src="domain.js"></script>
+</body>
+</html>
